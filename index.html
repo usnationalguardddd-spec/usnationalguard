@@ -120,6 +120,27 @@ button:hover{filter:brightness(1.12)}
 @media(max-width:650px){.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.profile-main{grid-template-columns:1fr}.preview{padding:22px}.photo-box{max-width:250px}.header-row{align-items:flex-start}.header-note{display:none}}
 
 
+/* FORUM EXPORT ONLY: affects the downloaded PNG, not the generator UI. */
+.preview.forum-export{
+  background:#2b3553 !important;
+  border:1px solid #3d4867 !important;
+  border-radius:4px !important;
+  box-shadow:none !important;
+  color:#f0f0f0 !important;
+  padding:28px 34px !important;
+}
+.preview.forum-export .classification{color:#aeb7cf !important}
+.preview.forum-export .classification strong{color:#d84b4b !important}
+.preview.forum-export .photo-box{background:#222b45 !important;border-color:#56617c !important}
+.preview.forum-export .rank-box{background:#242e49 !important;border-color:#414d6b !important}
+.preview.forum-export .info-label{color:#f0f0f0 !important}
+.preview.forum-export .info-value{color:var(--gold) !important}
+.preview.forum-export .info-value.white{color:#eee !important}
+.preview.forum-export .medal-stage{border-top-color:#3d4867 !important}
+.preview.forum-export .footer-stamp{color:#aeb7cf !important}
+.preview.forum-export .vertical{color:#77829d !important}
+.preview.forum-export .proxima-watermark{opacity:.07 !important}
+
 /* PROxima only: straight and in the bottom-right corner; USNG remains unchanged */
 .proxima-watermark { transform: rotate(0deg) !important; right: 18px !important; bottom: 14px !important; left: auto !important; top: auto !important; }
 </style>
@@ -364,8 +385,11 @@ async function downloadPNG(){
     if(typeof html2canvas !== 'function') throw new Error('PNG renderer is not loaded');
     // Give the browser a moment to finish rendering local images.
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    // Apply the forum appearance only while exporting. The live generator remains unchanged.
+    preview.classList.add('forum-export');
+    await new Promise(r=>requestAnimationFrame(r));
     const canvas=await html2canvas(preview,{
-      backgroundColor:'#242526',
+      backgroundColor:'#2b3553',
       scale:2,
       useCORS:true,
       allowTaint:false,
@@ -382,6 +406,7 @@ async function downloadPNG(){
     console.error(e);
     alert('Не удалось создать PNG. Если проблема повторяется, обнови страницу и попробуй ещё раз.');
   }finally{
+    preview.classList.remove('forum-export');
     if(button){button.disabled=false;button.textContent=oldText;}
   }
 }
