@@ -120,7 +120,7 @@ button:hover{filter:brightness(1.12)}
 @media(max-width:650px){.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.profile-main{grid-template-columns:1fr}.preview{padding:22px}.photo-box{max-width:250px}.header-row{align-items:flex-start}.header-note{display:none}}
 
 
-/* FORUM EXPORT ONLY: affects the downloaded PNG, not the generator UI. */
+
 .preview.forum-export{
   background:#2b3553 !important;
   border:1px solid #3d4867 !important;
@@ -141,7 +141,7 @@ button:hover{filter:brightness(1.12)}
 .preview.forum-export .vertical{color:#77829d !important}
 .preview.forum-export .proxima-watermark{opacity:.07 !important}
 
-/* PROxima only: straight and in the bottom-right corner; USNG remains unchanged */
+
 .proxima-watermark { transform: rotate(0deg) !important; right: 18px !important; bottom: 14px !important; left: auto !important; top: auto !important; }
 </style>
 </head>
@@ -381,11 +381,11 @@ async function downloadPNG(){
   const oldText=button ? button.textContent : '';
   if(button){button.disabled=true;button.textContent='PREPARING PNG...';}
   try{
-    // html2canvas is loaded below. It captures exactly what the user sees.
+    
     if(typeof html2canvas !== 'function') throw new Error('PNG renderer is not loaded');
-    // Give the browser a moment to finish rendering local images.
+    
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    // Apply the forum appearance only while exporting. The live generator remains unchanged.
+   
     preview.classList.add('forum-export');
     await new Promise(r=>requestAnimationFrame(r));
     const canvas=await html2canvas(preview,{
